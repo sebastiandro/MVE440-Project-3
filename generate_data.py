@@ -25,10 +25,23 @@ def GenerateGaussianData(means, stds, datapoints):
     return Xdata, Ydata
 
 
-def gaussian_clusters(nr_features=2, nr_classes=4, nr_data_points=10):
-    sigma = [np.append([1]*(nr_features//2), [0.01]
-                       * (nr_features-nr_features//2))]*nr_classes
+def gaussian_clusters(nr_features=2, nr_classes=4, nr_data_points=10, \
+                      random_diag=False, super_mega_random=False, variance_size=1):
+    
+    if super_mega_random:
+        sigma = np.random.rand(nr_classes,nr_features)*variance_size
+    elif random_diag:
+        sigma = np.random.rand(nr_classes,nr_features)
+        sigma[sigma > 0.5] = 1*variance_size
+        sigma[sigma <= 0.5] = 0.01
+    else:    
+        sigma = [np.append([1]*(nr_features//2), [0.01]
+                           * (nr_features-nr_features//2))]*nr_classes
+    
+    
     means = np.random.normal(0, 2*10, (nr_classes, nr_features))
     dataPoints = [nr_data_points] * nr_classes
     Xdat, Ydat = GenerateGaussianData(means, sigma, dataPoints)
     return Xdat, Ydat
+
+
