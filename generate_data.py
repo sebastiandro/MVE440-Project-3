@@ -29,7 +29,6 @@ def gaussian_clusters(nr_features=2, nr_classes=4, nr_data_points=10):
     sigma = [np.append([1]*(nr_features//2), [0.01]
                        * (nr_features-nr_features//2))]*nr_classes
     means = np.random.normal(0, 2*10, (nr_classes, nr_features))
-    print(means)
     dataPoints = [nr_data_points] * nr_classes
     Xdat, Ydat = GenerateGaussianData(means, sigma, dataPoints)
     return Xdat, Ydat
