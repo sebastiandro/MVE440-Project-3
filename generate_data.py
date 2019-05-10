@@ -26,7 +26,7 @@ def GenerateGaussianData(means, stds, datapoints):
 
 
 def gaussian_clusters(nr_features=2, nr_classes=4, nr_data_points=10, \
-                      random_diag=False, super_mega_random=False, variance_size=1):
+                      random_diag=False, super_mega_random=False, variance_size=1, mean_variance=1):
     
     if super_mega_random:
         sigma = np.random.rand(nr_classes,nr_features)*variance_size
@@ -39,7 +39,7 @@ def gaussian_clusters(nr_features=2, nr_classes=4, nr_data_points=10, \
                            * (nr_features-nr_features//2))]*nr_classes
     
     
-    means = np.random.normal(0, 2*10, (nr_classes, nr_features))
+    means = np.random.normal(0, mean_variance, (nr_classes, nr_features))
     dataPoints = [nr_data_points] * nr_classes
     Xdat, Ydat = GenerateGaussianData(means, sigma, dataPoints)
     return Xdat, Ydat
