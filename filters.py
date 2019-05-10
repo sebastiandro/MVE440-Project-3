@@ -150,6 +150,7 @@ def run_filters(X_train, y_train, X_test, y_test):
     best_scores = np.max(f_scores_filtered_knn), np.max(f_scores_filtered_lda), np.max(mi_scores_filtered_knn), np.max(mi_scores_filtered_lda), np.max(
         chi2_scores_filtered_knn), np.max(chi2_scores_filtered_lda)
 
-    times = f_score_filter_times, mi_filter_times, chi2_filter_times, f_score_knn_times, mi_knn_times, chi2_knn_times, f_score_lda_times, mi_lda_times, chi2_lda_times
+    times = np.sum(f_score_knn_times) + np.sum(f_score_filter_times), np.sum(mi_knn_times) + np.sum(mi_filter_times), np.sum(
+        chi2_knn_times) + np.sum(chi2_filter_times), np.sum(f_score_lda_times)+np.sum(f_score_filter_times), np.sum(mi_lda_times) + np.sum(mi_filter_times), np.sum(chi2_lda_times) + np.sum(chi2_filter_times)
 
     return best_ks, best_scores, times
