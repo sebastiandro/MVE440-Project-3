@@ -59,6 +59,10 @@ def run_filters(X_train, y_train, X_test, y_test):
     f_score_lda_times = np.zeros(nr_features)
     mi_lda_times = np.zeros(nr_features)
     chi2_lda_times = np.zeros(nr_features)
+    
+    f_scores = np.zeros(nr_features)
+    mi_scores = np.zeros(nr_features)
+    chi2_scores = np.zeros(nr_features)
 
     for iK, k in enumerate(range(1, nr_features+1)):
 
@@ -88,7 +92,7 @@ def run_filters(X_train, y_train, X_test, y_test):
 
         # mutual_inf
         start = time.time()
-        mi_score = SelectKBest(f_classif, k=k)
+        mi_score = SelectKBest(mutual_info_classif, k=k)
         mi_score.fit(X_train, y_train)
         end = time.time()
         mi_filter_times[iK] = end - start
@@ -153,4 +157,4 @@ def run_filters(X_train, y_train, X_test, y_test):
     times = np.sum(f_score_knn_times) + np.sum(f_score_filter_times), np.sum(mi_knn_times) + np.sum(mi_filter_times), np.sum(
         chi2_knn_times) + np.sum(chi2_filter_times), np.sum(f_score_lda_times)+np.sum(f_score_filter_times), np.sum(mi_lda_times) + np.sum(mi_filter_times), np.sum(chi2_lda_times) + np.sum(chi2_filter_times)
 
-    return best_ks, best_scores, times
+    return best_ks, best_scores, times, f_scores_filtered_knn, f_scores_filtered_lda, mi_scores_filtered_knn, mi_scores_filtered_lda, chi2_scores_filtered_knn, chi2_scores_filtered_lda
