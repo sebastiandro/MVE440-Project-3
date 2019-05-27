@@ -92,7 +92,7 @@ def run_filters(X_train, y_train, X_test, y_test):
 
         # mutual_inf
         start = time.time()
-        mi_score = SelectKBest(mutual_info_classif, k=k)
+        mi_score = SelectKBest(f_classif, k=k)
         mi_score.fit(X_train, y_train)
         end = time.time()
         mi_filter_times[iK] = end - start
@@ -146,7 +146,7 @@ def run_filters(X_train, y_train, X_test, y_test):
         chi2_scores_filtered_knn[iK] = chi2_knn_filtered_score
         chi2_scores_filtered_lda[iK] = chi2_lda_filtered_score
 
-    print("Order: f_score knn, mutual information knn, chi2 knn, f score lda, mutual information lda, chi2 lda")
+    #print("Order: f_score knn, mutual information knn, chi2 knn, f score lda, mutual information lda, chi2 lda")
 
     best_ks = np.argmax(f_scores_filtered_knn)+1, np.argmax(mi_scores_filtered_knn)+1, np.argmax(
         chi2_scores_filtered_knn)+1, np.argmax(f_scores_filtered_lda)+1, np.argmax(mi_scores_filtered_lda)+1, np.argmax(chi2_scores_filtered_lda)+1
