@@ -35,7 +35,7 @@ def knn(x_filtered_train, y_filtered_train, x_filtered_test, y_filtered_test):
     return knn_filtered_score
 
 
-def run_filters(X_train, y_train, X_test, y_test):
+def run_filters(X_train, y_train, X_test, y_test, only_lda=False, only_knn=False):
 
     nr_features = X_train.shape[1]
 
@@ -72,20 +72,25 @@ def run_filters(X_train, y_train, X_test, y_test):
         fscore.fit(X_train, y_train)
         end = time.time()
         f_score_filter_times[iK] = end - start
+        
+        f_knn_filtered_score = 0
+        f_lda_filtered_score = 0
 
         # fscore knn
-        start = time.time()
-        f_knn_filtered_score = knn(
-            fscore.transform(X_train), y_train, fscore.transform(X_test), y_test)
-        end = time.time()
-        f_score_knn_times[iK] = end - start
+        if not only_lda:
+            start = time.time()
+            f_knn_filtered_score = knn(
+                fscore.transform(X_train), y_train, fscore.transform(X_test), y_test)
+            end = time.time()
+            f_score_knn_times[iK] = end - start
 
         # fscore lda
-        start = time.time()
-        f_lda_filtered_score = lda(
-            fscore.transform(X_train), y_train, fscore.transform(X_test), y_test)
-        end = time.time()
-        f_score_lda_times[iK] = end - start
+        if not only_knn:
+            start = time.time()
+            f_lda_filtered_score = lda(
+                fscore.transform(X_train), y_train, fscore.transform(X_test), y_test)
+            end = time.time()
+            f_score_lda_times[iK] = end - start
 
         f_scores_filtered_knn[iK] = f_knn_filtered_score
         f_scores_filtered_lda[iK] = f_lda_filtered_score
@@ -96,23 +101,27 @@ def run_filters(X_train, y_train, X_test, y_test):
         mi_score.fit(X_train, y_train)
         end = time.time()
         mi_filter_times[iK] = end - start
+        mi_knn_filtered_score = 0
+        mi_lda_filtered_score = 0
 
         # mutal information knn
-        start = time.time()
-        mi_knn_filtered_score = knn(
-            mi_score.transform(X_train), y_train, mi_score.transform(X_test), y_test)
-        end = time.time()
-        mi_knn_times[iK] = end - start
+        if not only_lda:
+            start = time.time()
+            mi_knn_filtered_score = knn(
+                mi_score.transform(X_train), y_train, mi_score.transform(X_test), y_test)
+            end = time.time()
+            mi_knn_times[iK] = end - start
 
         # mutal information lda
-        start = time.time()
-        mi_lda_filtered_score = lda(
-            mi_score.transform(X_train), y_train, mi_score.transform(X_test), y_test)
-        end = time.time()
-        mi_lda_times[iK] = end - start
+        if not only_knn:
+            start = time.time()
+            mi_lda_filtered_score = lda(
+                mi_score.transform(X_train), y_train, mi_score.transform(X_test), y_test)
+            end = time.time()
+            mi_lda_times[iK] = end - start
 
-        mi_scores_filtered_knn[iK] = mi_knn_filtered_score
-        mi_scores_filtered_lda[iK] = mi_lda_filtered_score
+            mi_scores_filtered_knn[iK] = mi_knn_filtered_score
+            mi_scores_filtered_lda[iK] = mi_lda_filtered_score
 
         # Chi2
         scaler = MinMaxScaler()
@@ -128,23 +137,27 @@ def run_filters(X_train, y_train, X_test, y_test):
 
         X_train_chi2 = X_chi2.transform(X_train_normalized)
         X_test_chi2 = X_chi2.transform(X_test_normalized)
+        chi2_knn_filtered_score = 0
+        chi2_lda_filtered_score = 0
 
         # Chi2 knn
-        start = time.time()
-        chi2_knn_filtered_score = knn(
-            X_train_chi2, y_train, X_test_chi2, y_test)
-        end = time.time()
-        chi2_knn_times[iK] = end - start
+        if not only_lda:
+            start = time.time()
+            chi2_knn_filtered_score = knn(
+                X_train_chi2, y_train, X_test_chi2, y_test)
+            end = time.time()
+            chi2_knn_times[iK] = end - start
 
         # Chi2 lda
-        start = time.time()
-        chi2_lda_filtered_score = lda(
-            X_train_chi2, y_train, X_test_chi2, y_test)
-        end = time.time()
-        chi2_lda_times[iK] = end - start
+        if not only_knn:
+            start = time.time()
+            chi2_lda_filtered_score = lda(
+                X_train_chi2, y_train, X_test_chi2, y_test)
+            end = time.time()
+            chi2_lda_times[iK] = end - start
 
-        chi2_scores_filtered_knn[iK] = chi2_knn_filtered_score
-        chi2_scores_filtered_lda[iK] = chi2_lda_filtered_score
+            chi2_scores_filtered_knn[iK] = chi2_knn_filtered_score
+            chi2_scores_filtered_lda[iK] = chi2_lda_filtered_score
 
     #print("Order: f_score knn, mutual information knn, chi2 knn, f score lda, mutual information lda, chi2 lda")
 
